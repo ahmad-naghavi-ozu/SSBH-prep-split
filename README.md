@@ -1,14 +1,16 @@
-# SSBH Split Dataset
+# SSBH Benchmark Dataset - Preprocessed and Split Version
 
 This folder contains the train/validation/test split version of the SSBH (Sentinel-1 Sentinel-2 based Building Height) dataset, organized for machine learning training workflows and building height estimation tasks.
 
 ## Overview
 
-The SSBH split dataset provides ready-to-use train/validation/test splits with consistent formatting and balanced distribution across urban areas. This dataset combines Sentinel-2 optical imagery with crowdsourced building height annotations to create a comprehensive resource for building height estimation and segmentation tasks.
+This dataset provides a comprehensively preprocessed and analysis-ready version of the SSBH dataset with professional train/validation/test splits. The main contribution is the sophisticated preprocessing pipeline that transforms raw satellite data into ML-ready formats with enhanced quality and consistent formatting.
 
-**Original Dataset**: SSBH covers 67 urban centers in China with satellite imagery from 2019 Sentinel composites.  
-**Split Methodology**: Random shuffling with fixed seed for reproducibility  
-**Split Ratios**: 70% Train / 10% Validation / 20% Test
+**Key Features**:
+- **Advanced Preprocessing**: Smart interpolation, 16-bit RGB enhancement, and quality-validated processing
+- **Analysis-Ready Format**: All invalid values imputed, consistent data types, optimized storage
+- **Professional Splits**: 70% Train / 10% Validation / 20% Test with fixed seed reproducibility
+- **Coverage**: 67 urban centers in China with 2019 Sentinel-2 composites (~5,606 samples)
 
 ## Download
 
@@ -108,13 +110,39 @@ The dataset underwent comprehensive preprocessing to create analysis-ready data:
 
 ## Data Usage Guidelines
 
-### RGB Data Loading and Normalization
-The RGB images are stored in uint16 format (0-65535 range) and should be normalized to [0,1] range for most machine learning applications:
-```
-normalized_rgb = rgb_data.astype(np.float32) / 65535.0
+### 📢 SSBH Dataset Loading Update
+
+⚠️ **Special handling needed for SSBH RGB files (16-bit TIFF):**
+
+**Primary method (faster):**
+```python
+rgb = cv2.imread(path, cv2.IMREAD_ANYDEPTH | cv2.IMREAD_COLOR)
+rgb = cv2.cvtColor(rgb, cv2.COLOR_BGR2RGB)  # BGR→RGB
+if rgb.dtype == np.uint16:
+    rgb = rgb.astype(np.float32) / 65535.0  # 16-bit normalization
 ```
 
-**Important Learning Rate Consideration**: The necessity to normalize the 16-bit RGB imagery to the [0,1] range before inputting it into the deep learning model will most probably impact your typical learning rate. Therefore, you may need a significantly smaller rate compared to standard uint8 RGB datasets in the [0,255] range.
+**Fallback:**
+```python
+rgb = tifffile.imread(path)
+if rgb.dtype == np.uint16:
+    rgb = rgb.astype(np.float32) / 65535.0
+```
+
+✅ **DSM & SEM files:** Load normally with PIL
+```python
+dsm = np.array(Image.open(dsm_path)).astype(np.float32)
+sem = np.array(Image.open(sem_path)).astype(np.uint8)
+```
+
+**📝 CV2 Flags:**
+- `IMREAD_ANYDEPTH`: Preserves original bit depth (16-bit)
+- `IMREAD_COLOR`: Loads in color mode (3 channels)
+- `|` operator: Combines both flags (bitwise OR)
+
+**🌍 Note:** SSBH is the first dataset with *true geospatial 16-bit RGB TIFFs* [0,65535], unlike previous datasets that used TIFF format but had standard [0,255] values.
+
+**⚡ Learning Rate Impact:** The necessity to normalize 16-bit RGB imagery to [0,1] range will most probably impact your typical learning rate. You may need a significantly smaller rate compared to standard uint8 RGB datasets in the [0,255] range.
 
 ## Split Statistics and Distribution
 
