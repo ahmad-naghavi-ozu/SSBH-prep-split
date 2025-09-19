@@ -1,16 +1,16 @@
 # SSBH Benchmark Dataset - Preprocessed and Split Version
 
-This folder contains the train/validation/test split version of the SSBH (Sentinel-1 Sentinel-2 based Building Height) dataset, organized for machine learning training workflows and building height estimation tasks.
+This repository contains the comprehensively preprocessed and train/validation/test split version of the SSBH (Sentinel-1 Sentinel-2 based Building Height) dataset. The dataset features advanced preprocessing pipelines including smart interpolation, 16-bit RGB enhancement, and quality validation, organized with professional splits for machine learning training workflows and building height estimation tasks.
 
 ## Overview
 
-This dataset provides a comprehensively preprocessed and analysis-ready version of the SSBH dataset with professional train/validation/test splits. The main contribution is the sophisticated preprocessing pipeline that transforms raw satellite data into ML-ready formats with enhanced quality and consistent formatting.
+This provides a comprehensively preprocessed and analysis-ready version of the SSBH dataset with professional train/validation/test splits. The main contribution is the sophisticated preprocessing pipeline that transforms raw satellite data into ML-ready formats with enhanced quality and consistent formatting.
 
 **Key Features**:
 - **Advanced Preprocessing**: Smart interpolation, 16-bit RGB enhancement, and quality-validated processing
 - **Analysis-Ready Format**: All invalid values imputed, consistent data types, optimized storage
 - **Professional Splits**: 70% Train / 10% Validation / 20% Test with fixed seed reproducibility
-- **Coverage**: 67 urban centers in China with 2019 Sentinel-2 composites (~5,606 samples)
+- **Coverage**: 62 urban centers in China with 67 data cuts from 2019 Sentinel-2 composites (~5,606 samples)
 
 ## Download
 
@@ -190,7 +190,7 @@ The splitting process analyzes and reports:
 **For Building Segmentation**: IoU, F1 Score, Precision, Recall
 
 ### Data Characteristics to Consider
-- **Geographic scope**: Chinese urban areas (67 cities)
+- **Geographic scope**: Chinese urban areas (62 cities, 67 data cuts)
 - **Temporal consistency**: 2019 Sentinel-2 composites throughout
 - **Height accuracy**: Based on crowdsourced building floor count data
 - **Spatial resolution**: 10m per pixel, 256×256 pixel tiles
@@ -271,7 +271,7 @@ If you use this split dataset, please cite the original SSBH paper:
 
 ## Processing History
 
-- **Data Source**: SSBH dataset covering 67 urban centers in China with 2019 Sentinel-2 composites
+- **Data Source**: SSBH dataset covering 62 urban centers in China (67 data cuts) with 2019 Sentinel-2 composites
 - **Preprocessing**: RGB enhancement, height interpolation (100% success rate), and binary mask generation
 - **Splitting**: Random 70-10-20 split with seed 42 for reproducibility
 - **Version**: v1.0 (2025)
@@ -287,6 +287,6 @@ For questions about the dataset:
 
 **Split Version**: v1.0  
 **Split Date**: 2025  
-**Source**: SSBH Dataset (67 urban centers, China, 2019 Sentinel composites)  
+**Source**: SSBH Dataset (62 urban centers, 67 data cuts, China, 2019 Sentinel composites)  
 **Total Samples**: ~5,606 samples (after validation and quality checks)  
 **Processing Pipeline**: RGB enhancement, height interpolation, mask generation, 70-10-20 random split
