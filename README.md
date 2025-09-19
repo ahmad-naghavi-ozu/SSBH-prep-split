@@ -54,9 +54,17 @@ The dataset underwent comprehensive preprocessing to create analysis-ready data:
 
 **RGB Processing**: Sentinel-2 optical bands (B4-Red, B3-Green, B2-Blue) were combined into RGB composites. Original reflectance values (0-10000) were normalized to [0,1], enhanced using percentile contrast stretching (2nd-98th percentile), then scaled to uint16 format (0-65535) for efficient storage.
 
+  - **Reflectance Normalization**: Raw satellite data measures the proportion of electromagnetic radiation reflected back from Earth's surface. Sentinel-2 stores these as integers from 0-10,000 (representing 0-100% reflectance), which are converted to the standard 0-1 range by dividing by the scale factor (10,000).
+
+  - **Percentile Stretching**: A contrast enhancement technique that improves image visualization by:
+    1. Finding the 2nd percentile (very dark values) and 98th percentile (very bright values) for each RGB channel
+    2. Remapping these to become the new 0 and 1 (black and white) points
+    3. Removing extreme outliers while enhancing contrast using the full dynamic range
+    4. Applied per channel to maintain color balance
+
 **Height Data Processing**: Raw building height rasters from crowdsourced floor count data were processed with smart interpolation to handle invalid values. All NoData, NaN, and negative values were successfully imputed using nearest neighbor or griddata methods, ensuring all final height values are non-negative.
 
-**Building Mask Generation**: Binary building masks were derived using a 0m height threshold. Connected component filtering (minimum 1 pixel) was applied while preserving original spatial characteristics through direct threshold conversion.
+**Building Mask Generation**: Binary building masks were derived using a 0m height threshold. Connected component filtering (minimum 1 pixel) was applied while preserving original spatial characteristics through direct threshold conversion. The 1-pixel minimum is appropriate given that each pixel covers 100m² (10m × 10m) area, representing a substantial building footprint.
 
 ## Split Configuration
 
@@ -87,7 +95,10 @@ The dataset underwent comprehensive preprocessing to create analysis-ready data:
 - **Data type**: uint16 (0-65535 range)
 - **Spatial resolution**: 10m per pixel
 - **Tile size**: 256×256 pixels
-- **Processing**: Reflectance normalization and percentile contrast stretching (2nd-98th percentile) applied
+- **Processing**: 
+  - **Reflectance normalization**: Raw values (0-10000) converted to physical reflectance (0-1) representing 0-100% surface reflection
+  - **Percentile contrast stretching**: 2nd-98th percentile enhancement applied per channel to improve contrast while preserving color balance
+  - **Dynamic range optimization**: Final scaling to uint16 format for efficient storage
 - **Usage**: Convert to [0,1] range for model training: `rgb_normalized = rgb_data.astype(np.float32) / 65535.0`
 
 ### Height Data (`*/dsm/` folders)
@@ -230,6 +241,8 @@ To regenerate identical splits, use the configuration:
 
 ### Key Technical Considerations
 - **RGB Data**: Stored in uint16 format, requires normalization to [0,1] for training. May require smaller learning rates than standard uint8 data.
+- **Reflectance Values**: Represent true physical surface reflectance (0-100%) derived from Sentinel-2's calibrated measurements, providing more meaningful spectral information than simple pixel intensities.
+- **Contrast Enhancement**: Percentile stretching (2nd-98th percentile) enhances visual contrast while avoiding saturation from extreme outliers, making imagery more suitable for both visualization and model training.
 - **Height Data**: All values are non-negative (≥0m) after successful interpolation of original invalid values.
 - **Building Masks**: Direct threshold conversion (0m) with no morphological operations, preserving original spatial characteristics.
 - **Spatial Context**: Each 256×256 pixel tile covers 2.56km × 2.56km at 10m resolution, suitable for building-level analysis.
