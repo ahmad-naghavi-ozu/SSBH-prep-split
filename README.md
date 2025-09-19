@@ -48,6 +48,8 @@ All files follow a consistent naming pattern across modalities:
 
 The same base filename appears across all modalities (rgb/, dsm/, sem/) within each split folder.
 
+**Folder Naming Convention**: The `dsm/` and `sem/` naming follows standard remote sensing conventions where building height/mask detection tasks are subcategories of broader Digital Surface Model (DSM) and semantic segmentation tasks respectively. DSM typically refers to elevation models that capture surface heights including buildings, vegetation, and terrain, while semantic segmentation encompasses pixel-wise classification tasks. In this dataset, we focus specifically on the building components of these broader task categories.
+
 ### Data Processing Pipeline
 
 The dataset underwent comprehensive preprocessing to create analysis-ready data:
@@ -66,16 +68,19 @@ The dataset underwent comprehensive preprocessing to create analysis-ready data:
 
 **Building Mask Generation**: Binary building masks were derived using a 0m height threshold. Connected component filtering (minimum 1 pixel) was applied while preserving original spatial characteristics through direct threshold conversion. The 1-pixel minimum is appropriate given that each pixel covers 100m² (10m × 10m) area, representing a substantial building footprint.
 
-## Split Configuration
+## Split Configuration and Statistics
 
-**Split Ratios**: 70% Train / 10% Valid / 20% Test with random seed 42 for reproducibility
+The dataset is split into **70% Train / 10% Valid / 20% Test** using random seed 42 for reproducibility.
 
-**Technical Implementation**:
-- **Validation**: Complete modalities (RGB, height, mask) required for inclusion
-- **Randomization**: Deterministic shuffling with fixed seed ensuring reproducible splits
-- **Distribution**: Representative geographic coverage across all 67 data cuts
-- **Quality Control**: 100% height interpolation success, all NoData values resolved
-- **File Management**: Metadata-preserving copies organized in structured directories
+### Sample Counts
+- **Train**: ~3,924 samples (70%)
+- **Valid**: ~560 samples (10%) 
+- **Test**: ~1,122 samples (20%)
+
+### Key Features
+- **Geographic Coverage**: All 67 data cuts represented across splits
+- **Reproducible**: Fixed random seed (42) ensures consistent splits
+- **Quality Validated**: Complete modalities (RGB, height, mask) required for inclusion
 
 ## Data Specifications
 
@@ -107,7 +112,7 @@ The dataset underwent comprehensive preprocessing to create analysis-ready data:
 - **Data type**: uint8 (0: non-building, 1: building)
 - **Spatial resolution**: 10m per pixel
 - **Tile size**: 256×256 pixels
-- **Processing**: 0m height threshold applied with connected component filtering (minimum 1 pixel), preserving original spatial characteristics
+- **Processing**: 0m height threshold applied with connected component filtering (minimum 1 pixel). No morphological operations applied as direct threshold conversion proved more suitable after testing various morphological approaches.
 
 ## Data Usage Guidelines
 
@@ -145,29 +150,6 @@ sem = np.array(Image.open(sem_path)).astype(np.uint8)
 
 **⚡ Learning Rate Impact:** The necessity to normalize 16-bit RGB imagery to [0,1] range will most probably impact your typical learning rate. You may need a significantly smaller rate compared to standard uint8 RGB datasets in the [0,255] range.
 
-## Split Statistics and Distribution
-
-### Sample Distribution
-The dataset is split with careful attention to maintaining representative distribution:
-
-- **Geographic Coverage**: Samples from all 67 cuts represented across splits
-- **Urban Diversity**: Random splitting ensures varied urban densities in each split
-- **Building Complexity**: Mixed building heights and mask patterns in all splits
-
-### Expected Sample Counts
-Based on the complete dataset after preprocessing and validation:
-- **Train**: ~3,924 samples (70%)
-- **Valid**: ~560 samples (10%)
-- **Test**: ~1,122 samples (20%)
-
-*Note: Exact counts depend on the number of valid samples after data quality checks*
-
-### Cut Distribution Analysis
-The splitting process analyzes and reports:
-- Number of unique cuts represented in each split
-- Average samples per cut in each split
-- Range of cuts (cut01-cut67) covered
-
 ## Training and Evaluation Guidelines
 
 ### Recommended Approach
@@ -198,20 +180,6 @@ The visualization displays:
 - All modalities (RGB, Height, Building Mask) for each sample
 - Clear visual separation between different samples
 - Sample counts for each split labeled
-
-## Reproducibility
-
-### Split Generation
-The splitting process ensures reproducibility through:
-- **Fixed random seed**: 42 (for consistent shuffling)
-- **Deterministic ordering**: Sorted sample names before shuffling
-- **Complete documentation**: All parameters and steps recorded
-
-### Regenerating Splits
-To regenerate identical splits, use the configuration:
-- Train Ratio: 70%, Valid Ratio: 10%, Test Ratio: 20%
-- Random Seed: 42 (for reproducibility)
-- Processing: Fixed deterministic ordering with sorted sample names before shuffling
 
 ## Important Processing Notes
 
