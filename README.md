@@ -121,7 +121,7 @@ The dataset underwent comprehensive preprocessing to create analysis-ready data:
 
 ## Data Usage Guidelines
 
-### 📢 SSBH Dataset Loading Update
+### 📢 SSBH Dataset Loading Notes
 
 ⚠️ **Special handling needed for SSBH RGB files (16-bit TIFF):**
 
@@ -132,6 +132,11 @@ rgb = cv2.cvtColor(rgb, cv2.COLOR_BGR2RGB)  # BGR→RGB
 if rgb.dtype == np.uint16:
     rgb = rgb.astype(np.float32) / 65535.0  # 16-bit normalization
 ```
+
+- **📝 CV2 Flags:**
+  - `IMREAD_ANYDEPTH`: Preserves original bit depth (16-bit)
+  - `IMREAD_COLOR`: Loads in color mode (3 channels)
+  - `|` operator: Combines both flags (bitwise OR)
 
 **Fallback:**
 ```python
@@ -146,12 +151,7 @@ dsm = np.array(Image.open(dsm_path)).astype(np.float32)
 sem = np.array(Image.open(sem_path)).astype(np.uint8)
 ```
 
-**📝 CV2 Flags:**
-- `IMREAD_ANYDEPTH`: Preserves original bit depth (16-bit)
-- `IMREAD_COLOR`: Loads in color mode (3 channels)
-- `|` operator: Combines both flags (bitwise OR)
-
-**🌍 Note:** SSBH is the first dataset with *true geospatial 16-bit RGB TIFFs* [0,65535], unlike previous datasets that used TIFF format but had standard [0,255] values.
+**🌍 Note:** SSBH is an example of *true geospatial 16-bit RGB TIFFs* [0,65535], unlike many other typical remote sensing datasets that may use TIFF format but are in fact represented as standard [0,255] values.
 
 **⚡ Learning Rate Impact:** The necessity to normalize 16-bit RGB imagery to [0,1] range will most probably impact your typical learning rate. You may need a significantly smaller rate compared to standard uint8 RGB datasets in the [0,255] range.
 
