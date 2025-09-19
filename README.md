@@ -1,15 +1,15 @@
 # SSBH Benchmark Dataset - Preprocessed and Split Version
 
-This repository contains the comprehensively preprocessed and train/validation/test split version of the SSBH (Sentinel-1 Sentinel-2 based Building Height) dataset. The dataset features advanced preprocessing pipelines including smart interpolation, 16-bit RGB enhancement, and quality validation, organized with professional splits for machine learning training workflows and building height estimation tasks.
+This repository contains the comprehensively preprocessed and train/valid/test split version of the SSBH (Sentinel-1 Sentinel-2 based Building Height) dataset. The dataset features advanced preprocessing pipelines including smart interpolation, 16-bit RGB enhancement, and quality validation, organized with professional splits for machine learning training workflows and building height estimation tasks.
 
 ## Overview
 
-This provides a comprehensively preprocessed and analysis-ready version of the SSBH dataset with professional train/validation/test splits. The main contribution is the sophisticated preprocessing pipeline that transforms raw satellite data into ML-ready formats with enhanced quality and consistent formatting.
+This provides a comprehensively preprocessed and analysis-ready version of the SSBH dataset with professional train/valid/test splits. The main contribution is the sophisticated preprocessing pipeline that transforms raw satellite data into ML-ready formats with enhanced quality and consistent formatting.
 
 **Key Features**:
 - **Advanced Preprocessing**: Smart interpolation, 16-bit RGB enhancement, and quality-validated processing
 - **Analysis-Ready Format**: All invalid values imputed, consistent data types, optimized storage
-- **Professional Splits**: 70% Train / 10% Validation / 20% Test with fixed seed reproducibility
+- **Professional Splits**: 70% Train / 10% Valid / 20% Test with fixed seed reproducibility
 - **Coverage**: 62 urban centers in China with 67 data cuts from 2019 Sentinel-2 composites (~5,606 samples)
 
 ## Download
@@ -18,7 +18,7 @@ The preprocessed and split dataset is available for download from Google Drive:
 
 **🔗 [Download SSBH Split Dataset](https://drive.google.com/drive/folders/1zRrXZeGMRDpaZcKSCqFtd9nK84BUO9rZ?usp=sharing)**
 
-The download includes all train/validation/test splits with RGB imagery, building height rasters, and binary masks organized in the directory structure described below.
+The download includes all train/valid/test splits with RGB imagery, building height rasters, and binary masks organized in the directory structure described below.
 
 ## Dataset Structure
 
@@ -32,7 +32,7 @@ _prep_split/
 │   ├── rgb/               # RGB composite images
 │   ├── dsm/               # Building height rasters
 │   └── sem/               # Binary building masks
-├── test/                  # Test set (20% of samples)
+├── test/                  # Testing set (20% of samples)
 │   ├── rgb/               # RGB composite images
 │   ├── dsm/               # Building height rasters
 │   └── sem/               # Binary building masks
@@ -68,24 +68,14 @@ The dataset underwent comprehensive preprocessing to create analysis-ready data:
 
 ## Split Configuration
 
-### Split Ratios
-- **Training Set**: 70% of samples (primary dataset for model training)
-- **Validation Set**: 10% of samples (hyperparameter tuning and model selection)
-- **Test Set**: 20% of samples (final evaluation and performance reporting)
+**Split Ratios**: 70% Train / 10% Valid / 20% Test with random seed 42 for reproducibility
 
-### Splitting Methodology
-1. **Data Validation**: All samples validated for completeness across RGB, height, and mask modalities
-2. **Random Shuffling**: Samples randomly shuffled with fixed seed (42) for reproducibility
-3. **Proportional Splitting**: Samples divided according to specified ratios (70-10-20)
-4. **File Organization**: Complete copies of files organized into split directory structure
-5. **Quality Verification**: File counts and integrity verified across all splits and modalities
-
-### Quality Assurance
-- **Completeness Check**: Only samples with all three modalities (RGB, height, mask) included
-- **Balanced Distribution**: Random splitting ensures representative distribution across cuts
-- **Reproducibility**: Fixed random seed (42) allows identical splits across runs
-- **File Integrity**: shutil.copy2() preserves metadata and timestamps
-- **Processing Validation**: All height interpolation successful (100% success rate), no NoData values remain
+**Technical Implementation**:
+- **Validation**: Complete modalities (RGB, height, mask) required for inclusion
+- **Randomization**: Deterministic shuffling with fixed seed ensuring reproducible splits
+- **Distribution**: Representative geographic coverage across all 67 data cuts
+- **Quality Control**: 100% height interpolation success, all NoData values resolved
+- **File Management**: Metadata-preserving copies organized in structured directories
 
 ## Data Specifications
 
@@ -166,8 +156,8 @@ The dataset is split with careful attention to maintaining representative distri
 
 ### Expected Sample Counts
 Based on the complete dataset after preprocessing and validation:
-- **Training**: ~3,924 samples (70%)
-- **Validation**: ~560 samples (10%)
+- **Train**: ~3,924 samples (70%)
+- **Valid**: ~560 samples (10%)
 - **Test**: ~1,122 samples (20%)
 
 *Note: Exact counts depend on the number of valid samples after data quality checks*
@@ -182,7 +172,7 @@ The splitting process analyzes and reports:
 
 ### Recommended Approach
 - **Training**: Use train split (70%) for model training
-- **Validation**: Use valid split (10%) for hyperparameter tuning and model selection  
+- **Valid**: Use valid split (10%) for hyperparameter tuning and model selection  
 - **Testing**: Use test split (20%) for final performance evaluation only
 
 ### Evaluation Metrics
@@ -223,20 +213,6 @@ To regenerate identical splits, use the configuration:
 - Random Seed: 42 (for reproducibility)
 - Processing: Fixed deterministic ordering with sorted sample names before shuffling
 
-## Storage and Performance
-
-### Disk Usage
-- **Total size**: ~2x preprocessed dataset size (files are copied, not moved)
-- **Per-sample size**: ~1.5MB (RGB: ~1MB, Height: ~256KB, Mask: ~64KB)
-- **Training set**: ~5.9GB (assuming 3,924 samples)
-- **Validation set**: ~840MB (assuming 560 samples)
-- **Test set**: ~1.7GB (assuming 1,122 samples)
-
-### Loading Performance
-- **Recommended batch size**: 16-32 samples for 8GB GPU
-- **Data loading workers**: 4-8 workers for optimal I/O performance
-- **Memory considerations**: Consider memory mapping for very large training runs
-
 ## Important Processing Notes
 
 ### Key Technical Considerations
@@ -274,19 +250,5 @@ If you use this split dataset, please cite the original SSBH paper:
 - **Data Source**: SSBH dataset covering 62 urban centers in China (67 data cuts) with 2019 Sentinel-2 composites
 - **Preprocessing**: RGB enhancement, height interpolation (100% success rate), and binary mask generation
 - **Splitting**: Random 70-10-20 split with seed 42 for reproducibility
+- **Total Samples**: ~5,606 samples (after validation and quality checks)
 - **Version**: v1.0 (2025)
-
-## Contact and Support
-
-For questions about the dataset:
-- Check the comprehensive data loading examples provided above
-- Verify data integrity using the provided loading and visualization functions
-- Report issues with specific sample IDs and detailed error descriptions
-
----
-
-**Split Version**: v1.0  
-**Split Date**: 2025  
-**Source**: SSBH Dataset (62 urban centers, 67 data cuts, China, 2019 Sentinel composites)  
-**Total Samples**: ~5,606 samples (after validation and quality checks)  
-**Processing Pipeline**: RGB enhancement, height interpolation, mask generation, 70-10-20 random split
