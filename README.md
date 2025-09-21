@@ -1,4 +1,4 @@
-# SSBH Benchmark Dataset - Preprocessed and Split Dataset with Scripts
+# SSBH Benchmark Dataset - Preprocessed and Split version with Scripts
 
 This repository provides **reproduction scripts** and the **preprocessed/split dataset** for the SSBH (Sentinel-1 Sentinel-2 based Building Height) dataset. It includes complete Jupyter notebooks for transforming raw SSBH data into analysis-ready formats with advanced preprocessing pipelines (smart interpolation, 16-bit RGB enhancement, quality validation) and professional train/valid/test splits for machine learning workflows.
 
