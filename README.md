@@ -1,4 +1,4 @@
-# SSBH Benchmark Dataset - Preprocessing and Splitting Scripts
+# SSBH Benchmark Dataset - Preprocessed and Split Dataset with Scripts
 
 This repository provides **reproduction scripts** and the **preprocessed/split dataset** for the SSBH (Sentinel-1 Sentinel-2 based Building Height) dataset. It includes complete Jupyter notebooks for transforming raw SSBH data into analysis-ready formats with advanced preprocessing pipelines (smart interpolation, 16-bit RGB enhancement, quality validation) and professional train/valid/test splits for machine learning workflows.
 
@@ -48,6 +48,8 @@ ssbh_prep_split/
 ## Overview
 
 This provides a comprehensively preprocessed and analysis-ready version of the SSBH dataset with professional train/valid/test splits. The main contribution is the sophisticated preprocessing pipeline that transforms raw satellite data into ML-ready formats with enhanced quality and consistent formatting.
+
+**Original Repository**: [https://github.com/CSPON2035/SSBH](https://github.com/CSPON2035/SSBH)
 
 **Key Features**:
 - **Advanced Preprocessing**: Smart interpolation, 16-bit RGB enhancement, and quality-validated processing
@@ -241,6 +243,8 @@ The visualization displays:
 - RGB-only spectral information may limit some applications
 
 ## Citation
+
+**Paper Link**: [https://www.spiedigitallibrary.org/conference-proceedings-of-spie/13506/135061G/SSBH--a-remote-sensing-building-height-dataset-for-deep/10.1117/12.3057532.full](https://www.spiedigitallibrary.org/conference-proceedings-of-spie/13506/135061G/SSBH--a-remote-sensing-building-height-dataset-for-deep/10.1117/12.3057532.full)
 
 If you use this split dataset, please cite the original SSBH paper:
 
