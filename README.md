@@ -1,6 +1,6 @@
-# SSBH Benchmark Dataset - Preprocessed and Split version with Scripts
+# RGB Building Height Dataset - Preprocessed SSBH for Deep Learning
 
-This repository provides **reproduction scripts** and the **preprocessed/split dataset** for the SSBH (Sentinel-1 Sentinel-2 based Building Height) dataset. It includes complete Jupyter notebooks for transforming raw SSBH data into analysis-ready formats with advanced preprocessing pipelines (smart interpolation, 16-bit RGB enhancement, quality validation) and professional train/valid/test splits for machine learning workflows.
+This repository provides **reproduction scripts** and the **preprocessed/split dataset** derived from the SSBH dataset, specifically focused on **RGB-based building height prediction and segmentation**. Using only Sentinel-2 RGB bands, it includes complete Jupyter notebooks for transforming raw satellite imagery into analysis-ready formats optimized for **multi-task deep learning** (building height regression + building mask segmentation) with advanced preprocessing pipelines (smart interpolation, 16-bit RGB enhancement, quality validation) and professional train/valid/test splits.
 
 ## Reproduction Workflow
 
@@ -47,15 +47,17 @@ ssbh_prep_split/
 
 ## Overview
 
-This provides a comprehensively preprocessed and analysis-ready version of the SSBH dataset with professional train/valid/test splits. The main contribution is the sophisticated preprocessing pipeline that transforms raw satellite data into ML-ready formats with enhanced quality and consistent formatting.
+This provides a comprehensively preprocessed and analysis-ready version of the SSBH dataset with professional train/valid/test splits, **specifically designed for RGB-to-building-height deep learning tasks**. The main contribution is the sophisticated preprocessing pipeline that transforms **Sentinel-2 RGB satellite imagery** into ML-ready formats for **building height regression and building segmentation** with enhanced quality and consistent formatting.
 
 **Original Repository**: [https://github.com/CSPON2035/SSBH](https://github.com/CSPON2035/SSBH)
 
 **Key Features**:
+- **RGB-Focused Approach**: Uses only Sentinel-2 RGB bands for building analysis tasks
+- **Multi-Task Learning Ready**: Simultaneous building height estimation and building mask segmentation
 - **Advanced Preprocessing**: Smart interpolation, 16-bit RGB enhancement, and quality-validated processing
 - **Analysis-Ready Format**: All invalid values imputed, consistent data types, optimized storage
 - **Professional Splits**: 70% Train / 10% Valid / 20% Test with fixed seed reproducibility
-- **Coverage**: 62 urban centers in China with 67 data cuts from 2019 Sentinel-2 composites (~5,606 samples)
+- **Coverage**: 62 urban centers in China with 67 data cuts from 2019 Sentinel-2 RGB composites (~5,606 samples)
 
 ## Download
 
